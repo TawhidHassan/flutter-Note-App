@@ -4,11 +4,7 @@ class NotesServices{
 
   List<NotesModel> _notes =
   [
-    {
-      "id":1,
-      "title":'hello worlds',
-      "createdAt":"abc"
-    }
+    NotesModel(id: "1", title: "hello", createdAt: "abc")
   ];
 
   List<NotesModel> get getNotes =>_notes;

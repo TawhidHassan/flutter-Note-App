@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class NotesModel {
   String id;
   String title;
-  DateTime createdAt;
+  String createdAt;
 
   NotesModel({
     @required this.id,

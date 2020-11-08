@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_note_app/services/notes_services.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatelessWidget {
   TextEditingController _titleController = TextEditingController();
+  final noteServices=NotesServices();
+
 
   void showBottomModal(BuildContext context){
     showModalBottomSheet(context: context, builder: (Contxt){
@@ -54,8 +57,19 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: Text("Note Taking"),
       ),
+      body: ListView(
+        children: noteServices.getNotes.map(
+              (item) =>ListTile(
+                title: Text(item.title),
+                subtitle: Text(item.createdAt),
+                trailing:Icon(Icons.delete) ,
+              )
+        ).toList(),
+
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=>showBottomModal(context),
+
         child: Icon(Icons.add),
       ),
     );
