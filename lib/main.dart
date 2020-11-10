@@ -16,10 +16,15 @@ class MyApp extends StatelessWidget {
 
 }
 
-class Home extends StatelessWidget {
-  TextEditingController _titleController = TextEditingController();
-  final noteServices=NotesServices();
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
+  TextEditingController _titleController = TextEditingController();
+
+  final noteServices=NotesServices();
 
   void showBottomModal(BuildContext context){
     showModalBottomSheet(context: context, builder: (Contxt){
@@ -42,7 +47,13 @@ class Home extends StatelessWidget {
                   )
               ),
               FlatButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    setState(() {
+                      noteServices.addNote(_titleController.text);
+                    });
+                    Navigator.of(context).pop();
+                    _titleController.clear();
+                  },
                   child: Text("Save Note"))
             ],
           ),
@@ -62,14 +73,17 @@ class Home extends StatelessWidget {
               (item) =>ListTile(
                 title: Text(item.title),
                 subtitle: Text(item.createdAt),
-                trailing:Icon(Icons.delete) ,
+                trailing:IconButton(icon: Icon(Icons.delete_forever,color: Colors.red,), onPressed: (){
+                  setState(() {
+                    noteServices.deleteNotes(item.id);
+                  });
+                }) ,
               )
         ).toList(),
 
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=>showBottomModal(context),
-
         child: Icon(Icons.add),
       ),
     );
