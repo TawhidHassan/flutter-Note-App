@@ -65,6 +65,40 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void showUpdatePopup(String noteId,BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          _titleController.text=noteServices.getNotes.firstWhere((element) => element.id==noteId).title;
+          return AlertDialog(
+            title: Text('Edit note!'),
+            content: TextField(
+              controller: _titleController,
+              decoration: InputDecoration(border: OutlineInputBorder()),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _titleController.clear();
+                },
+              ),
+              FlatButton(
+                child: new Text('UPDATE'),
+                onPressed: () {
+                  setState(() {
+                    noteServices.updateTodo(noteId, _titleController.text);
+                  });
+                  Navigator.of(context).pop();
+                  _titleController.clear();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,14 +115,25 @@ class _HomeState extends State<Home> {
       ),
       body: ListView(
         children: noteServices.getNotes.map(
-              (item) =>ListTile(
-                title: Text(item.title),
-                subtitle: Text(item.createdAt),
-                trailing:IconButton(icon: Icon(Icons.delete_forever,color: Colors.red,), onPressed: (){
-                  setState(() {
-                    noteServices.deleteNotes(item.id);
-                  });
-                }) ,
+              (item) =>Card(
+                elevation: 5,
+                child: ListTile(
+                  title: Text(item.title),
+                  subtitle: Text(item.createdAt),
+                  trailing:Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => showUpdatePopup(item.id,context)),
+                      IconButton(icon: Icon(Icons.delete_forever,color: Colors.red,), onPressed: (){
+                        setState(() {
+                          noteServices.deleteNotes(item.id);
+                        });
+                      })
+                    ],
+                  ) ,
+                ),
               )
         ).toList(),
 

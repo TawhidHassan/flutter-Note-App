@@ -24,6 +24,11 @@ class NotesServices {
     return;
   }
 
+  void updateTodo(String id, String newTitle) {
+    final note = _notes.firstWhere((element) => element.id==id);
+    note.title = newTitle;
 
+    return;
+  }
 
 }
