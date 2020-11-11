@@ -43,6 +43,9 @@ class _HomeState extends State<Home> {
               Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder()
+                    ),
                     controller: _titleController,
                   )
               ),
@@ -66,7 +69,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Note Taking"),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: Text("Note Taking",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 25
+        ),
+        ),
       ),
       body: ListView(
         children: noteServices.getNotes.map(
@@ -82,9 +93,10 @@ class _HomeState extends State<Home> {
         ).toList(),
 
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
         onPressed: ()=>showBottomModal(context),
-        child: Icon(Icons.add),
+        label: Text("Add"),
       ),
     );
   }
